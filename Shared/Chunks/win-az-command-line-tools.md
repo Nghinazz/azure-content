@@ -23,6 +23,7 @@ In addition to command-specific optional parameters documented here, there are t
 * [Commands to manage your Windows Azure certificates](#Commands_to_manage_your_Azure_certificates)
 * [Commands to manage your web sites](#Commands_to_manage_your_web_sites)
 * [Commands to manage Windows Azure Mobile Services](#Commands_to_manage_mobile_services)
+* [Commands to manage Service Bus](#Commands_to_manage_service_bus)
 * [Manage tool local settings](#Manage_tool_local_settings)
 
 ##<a name="Manage_your_account_information_and_publish_settings"></a>Manage your account information and publish settings
@@ -1108,3 +1109,99 @@ This command changes a config setting.
 	~$ azure config set defaultStorageAccount myname
 	info:   Setting 'defaultStorageAccount' to value 'myname'
 	info:   Changes saved.
+
+##<a name ="Commands_to_manage_service_bus"></a>Commands to mange Service Bus
+
+Use these commands to manage your Service Bus account
+
+**azure sb namespace create &lt;name> &lt;location>**
+
+Creates a new Service Bus namespace
+
+	~$ azure sb namespace create mysbnamespacea-test "West US"
+	info:    Executing command sb namespace create
+	+ Creating namespace mysbnamespacea-test in region West US
+	data:    Name: mysbnamespacea-test
+	data:    Region: West US
+	data:    DefaultKey: fBu8nQ9svPIesFfMFVhCFD+/sY0rRbifWMoRpYy0Ynk=
+	data:    Status: Activating
+	data:    CreatedAt: 2013-11-14T16:23:29.32Z
+	data:    AcsManagementEndpoint: https://mysbnamespacea-test-sb.accesscontrol.windows.net/
+	data:    ServiceBusEndpoint: https://mysbnamespacea-test.servicebus.windows.net/
+	
+	data:    ConnectionString: Endpoint=sb://mysbnamespacea-test.servicebus.windows.
+	net/;SharedSecretIssuer=owner;SharedSecretValue=fBu8nQ9svPIesFfMFVhCFD+/sY0rRbif
+	WMoRpYy0Ynk=
+	data:    SubscriptionId: 8679c8be3b0549d9b8fb4bd232a48931
+	data:    Enabled: true
+	data:    _: [object Object]
+	info:    sb namespace create command OK
+
+**azure sb namespace show &lt;name>**
+
+Display details about a specific namespace
+
+	~$ azure sb namespace show mysbnamespacea-test
+	info:    Executing command sb namespace show
+	+ Getting namespace
+	data:    Name: mysbnamespacea-test
+	data:    Region: West US
+	data:    DefaultKey: fBu8nQ9svPIesFfMFVhCFD+/sY0rRbifWMoRpYy0Ynk=
+	data:    Status: Active
+	data:    CreatedAt: 2013-11-14T16:23:29.32Z
+	data:    AcsManagementEndpoint: https://mysbnamespacea-test-sb.accesscontrol.windows.net/
+	data:    ServiceBusEndpoint: https://mysbnamespacea-test.servicebus.windows.net/
+	
+	data:    ConnectionString: Endpoint=sb://mysbnamespacea-test.servicebus.windows.
+	net/;SharedSecretIssuer=owner;SharedSecretValue=fBu8nQ9svPIesFfMFVhCFD+/sY0rRbif
+	WMoRpYy0Ynk=
+	data:    SubscriptionId: 8679c8be3b0549d9b8fb4bd232a48931
+	data:    Enabled: true
+	data:    UpdatedAt: 2013-11-14T16:25:37.85Z
+	info:    sb namespace show command OK
+
+**azure sb namespace list**
+
+List all namespaces created for your account
+
+	~$ azure sb namespace list
+	info:    Executing command sb namespace list
+	+ Getting namespaces
+	data:    Name                 Region   Status
+	data:    -------------------  -------  ------
+	data:    mysbnamespacea-test  West US  Active
+	info:    sb namespace list command OK
+
+**azure sb namespace delete &lt;name>**
+
+Remove a namespace
+
+	~$ azure sb namespace delete mysbnamespacea-test
+	info:    Executing command sb namespace delete
+	Delete namespace mysbnamespacea-test? [y/n] y
+	+ Deleting namespace mysbnamespacea-test
+	info:    sb namespace delete command OK
+
+**azure sb namespace location list**
+
+Display a list of all available namespace locations
+
+	~$ azure sb namespace location list
+	info:    Executing command sb namespace location list
+	+ Getting locations
+	data:    Name              Code
+	data:    ----------------  ----------------
+	data:    East Asia         East Asia
+	data:    West Europe       West Europe
+	data:    North Europe      North Europe
+	data:    East US           East US
+	data:    Southeast Asia    Southeast Asia
+	data:    North Central US  North Central US
+	data:    West US           West US
+	data:    South Central US  South Central US
+	info:    sb namespace location list command OK
+
+**azure sb namespace verify &lt;name>**
+
+Check whether the namespace is available
+
