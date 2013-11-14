@@ -24,6 +24,7 @@ In addition to command-specific optional parameters documented here, there are t
 * [Commands to manage your web sites](#Commands_to_manage_your_web_sites)
 * [Commands to manage Windows Azure Mobile Services](#Commands_to_manage_mobile_services)
 * [Commands to manage Service Bus](#Commands_to_manage_service_bus)
+* [Commands to manage SQL Databases](#Commands_to_manage_sql)
 * [Manage tool local settings](#Manage_tool_local_settings)
 
 ##<a name="Manage_your_account_information_and_publish_settings"></a>Manage your account information and publish settings
@@ -1110,7 +1111,7 @@ This command changes a config setting.
 	info:   Setting 'defaultStorageAccount' to value 'myname'
 	info:   Changes saved.
 
-##<a name ="Commands_to_manage_service_bus"></a>Commands to mange Service Bus
+##<a name ="Commands_to_manage_service_bus"></a>Commands to manage Service Bus
 
 Use these commands to manage your Service Bus account
 
@@ -1205,3 +1206,66 @@ Display a list of all available namespace locations
 
 Check whether the namespace is available
 
+##<a name ="Commands_to_manage_sql"></a>Commands to manage SQL Databases
+
+Use these commands to manage your Azure SQL Databases
+
+###Commands to manage SQL Servers
+
+Use these commands to manage your SQL Servers
+
+**azure sql server create &lt;administratorLogin> &lt;administratorPassword> &lt;location>**
+
+create a new database server
+
+**azure sql server show &lt;name>**
+
+display server details
+
+**azure sql server list**
+
+get the list of servers
+
+**azure sql server delete &lt;name>**
+
+Deletes a server 
+
+###Commands to manage SQL Databases
+
+Use these commands to manage your SQL Databases
+
+**azure sql db create [options] &lt;serverName> &lt;databaseName> &lt;administratorPassword>**
+
+Creates a new database instance
+
+**azure sql db show [options] &lt;serverName> &lt;databaseName> &lt;administratorPassword>**
+
+Display database details
+
+**azure sql db list [options] &lt;serverName> &lt;administratorPassword>**
+
+List the database
+
+**azure sql db delete [options] &lt;serverName> &lt;databaseName> &lt;administratorPassword>**
+
+Deletes a database 
+
+###Commands to manage your SQL Server firewall rules
+
+Use these commands to manage your SQL Server firewall rules
+
+**sql firewallrule create [options] <serverName> <ruleName> <startIPAddress> <endIPAddress>**
+
+Create a new firewall rule for a SQL Server
+
+**sql firewallrule show [options] <serverName> <ruleName>**
+
+Show firewall rule details
+
+**sql firewallrule list [options] <serverName>**
+
+List the firewall rules
+
+**sql firewallrule delete [options] <serverName> <ruleName>**
+
+Delete a firewall rule
