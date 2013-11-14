@@ -26,6 +26,7 @@ In addition to command-specific optional parameters documented here, there are t
 * [Commands to manage Service Bus](#Commands_to_manage_service_bus)
 * [Commands to manage SQL Databases](#Commands_to_manage_sql)
 * [Manage tool local settings](#Manage_tool_local_settings)
+* [Commands to manage your Virtual Networks](#Commands_to_manage_vnet)
 
 ##<a name="Manage_your_account_information_and_publish_settings"></a>Manage your account information and publish settings
 Your Windows Azure subscription information is used by the tool to connect to your account. This information can be obtained from the Windows Azure portal in a publish settings file as described here. The publish settings file can then be imported as a persistent local config setting that the tool will use for subsequent operations. You only need to import your publish settings once.
@@ -67,6 +68,16 @@ This command removes the stored publish settings that have been imported. Use th
 	Clearing account info.
 	info:   OK
 
+**account list [options]**
+
+List the imported subscriptions
+
+**account set [options] <subscription>**
+
+Set the current subscription
+
+###Commands to manage your affinity groups
+
 **account affinity-group list [options]**
 
 This command lists your Windows Azure affinity groups.
@@ -79,6 +90,55 @@ Affinity groups can be set when a group of virtual machines spans multiple physi
 	data:   ------------------------------------  ------  --------
 	data:   535EBAED-BF8B-4B18-A2E9-8755FB9D733F  opentec  West US
 	info:   account affinity-group list command OK
+
+**account affinity-group create [options] <name>**
+
+This command creates a new affinity group
+
+**account affinity-group show [options] <name>**
+
+This command shows the details of the affinity group
+
+**account affinity-group delete [options] <name>**
+
+This command deletes the specified affinity group
+
+###Commands to manage your account environment
+
+**account env list [options]**
+
+List of the account environments
+
+	C:\windows\system32>azure account env list
+	info:    Executing command account env list
+	data:    Name
+	data:    ---------------
+	data:    AzureCloud
+	data:    AzureChinaCloud
+	info:    account env list command OK
+
+**account env show [options] [environment]**
+
+Show account environment details
+
+	~$ azure account env show
+	info:    Executing command account env show
+	Environment name: AzureCloud
+	data:    Environment publishingProfile  http://go.microsoft.com/fwlink/?LinkId=2544
+	data:    Environment portal  http://go.microsoft.com/fwlink/?LinkId=2544
+	info:    account env show command OK
+
+**account env add [options] [environment]**
+
+This command adds an environment to the account
+
+**account env set [options] [environment]**
+
+This command sets the account environment
+
+**account env delete [options] [environment]**
+
+This command deletes the specified environment from the account
 
 ##<a name="Commands_to_manage_your_Azure_virtual_machines"></a>Commands to manage your Windows Azure virtual machines
 The following diagram shows how Windows Azure virtual machines are hosted in the production deployment environment of a Windows Azure cloud service.
@@ -1115,7 +1175,7 @@ This command changes a config setting.
 
 Use these commands to manage your Service Bus account
 
-**azure sb namespace create &lt;name> &lt;location>**
+**sb namespace create &lt;name> &lt;location>**
 
 Creates a new Service Bus namespace
 
@@ -1138,7 +1198,7 @@ Creates a new Service Bus namespace
 	data:    _: [object Object]
 	info:    sb namespace create command OK
 
-**azure sb namespace show &lt;name>**
+**sb namespace show &lt;name>**
 
 Display details about a specific namespace
 
@@ -1161,7 +1221,7 @@ Display details about a specific namespace
 	data:    UpdatedAt: 2013-11-14T16:25:37.85Z
 	info:    sb namespace show command OK
 
-**azure sb namespace list**
+**sb namespace list**
 
 List all namespaces created for your account
 
@@ -1173,7 +1233,7 @@ List all namespaces created for your account
 	data:    mysbnamespacea-test  West US  Active
 	info:    sb namespace list command OK
 
-**azure sb namespace delete &lt;name>**
+**sb namespace delete &lt;name>**
 
 Remove a namespace
 
@@ -1183,7 +1243,7 @@ Remove a namespace
 	+ Deleting namespace mysbnamespacea-test
 	info:    sb namespace delete command OK
 
-**azure sb namespace location list**
+**sb namespace location list**
 
 Display a list of all available namespace locations
 
@@ -1202,7 +1262,7 @@ Display a list of all available namespace locations
 	data:    South Central US  South Central US
 	info:    sb namespace location list command OK
 
-**azure sb namespace verify &lt;name>**
+**sb namespace verify &lt;name>**
 
 Check whether the namespace is available
 
@@ -1214,19 +1274,36 @@ Use these commands to manage your Azure SQL Databases
 
 Use these commands to manage your SQL Servers
 
-**azure sql server create &lt;administratorLogin> &lt;administratorPassword> &lt;location>**
+**sql server create &lt;administratorLogin> &lt;administratorPassword> &lt;location>**
 
 create a new database server
 
-**azure sql server show &lt;name>**
+**sql server show &lt;name>**
 
-display server details
+Display server details
 
-**azure sql server list**
+	~$ azure sql server show xclfgcndfg
+	info:    Executing command sql server show
+	+ Getting SQL server
+	data:    SQL Server Name xclfgcndfg
+	data:    SQL Server AdministratorLogin msopentechforums
+	data:    SQL Server Location West US
+	data:    SQL Server FullyQualifiedDomainName xclfgcndfg.database.windows.net
+	info:    sql server show command OK
 
-get the list of servers
+**sql server list**
 
-**azure sql server delete &lt;name>**
+Get the list of servers
+
+	~$ azure sql server list
+	info:    Executing command sql server list
+	+ Getting SQL server
+	data:    Name        Location
+	data:    ----------  --------
+	data:    xclfgcndfg  West US
+	info:    sql server list command OK
+
+**sql server delete &lt;name>**
 
 Deletes a server 
 
@@ -1234,19 +1311,19 @@ Deletes a server
 
 Use these commands to manage your SQL Databases
 
-**azure sql db create [options] &lt;serverName> &lt;databaseName> &lt;administratorPassword>**
+**sql db create [options] &lt;serverName> &lt;databaseName> &lt;administratorPassword>**
 
 Creates a new database instance
 
-**azure sql db show [options] &lt;serverName> &lt;databaseName> &lt;administratorPassword>**
+**sql db show [options] &lt;serverName> &lt;databaseName> &lt;administratorPassword>**
 
 Display database details
 
-**azure sql db list [options] &lt;serverName> &lt;administratorPassword>**
+**sql db list [options] &lt;serverName> &lt;administratorPassword>**
 
 List the database
 
-**azure sql db delete [options] &lt;serverName> &lt;databaseName> &lt;administratorPassword>**
+**sql db delete [options] &lt;serverName> &lt;databaseName> &lt;administratorPassword>**
 
 Deletes a database 
 
@@ -1254,18 +1331,136 @@ Deletes a database
 
 Use these commands to manage your SQL Server firewall rules
 
-**sql firewallrule create [options] <serverName> <ruleName> <startIPAddress> <endIPAddress>**
+**sql firewallrule create [options] &lt;serverName> &lt;ruleName> &lt;startIPAddress> &lt;endIPAddress>**
 
 Create a new firewall rule for a SQL Server
 
-**sql firewallrule show [options] <serverName> <ruleName>**
+**sql firewallrule show [options] &lt;serverName> &lt;ruleName>**
 
 Show firewall rule details
 
-**sql firewallrule list [options] <serverName>**
+**sql firewallrule list [options] &lt;serverName>**
 
 List the firewall rules
 
-**sql firewallrule delete [options] <serverName> <ruleName>**
+**sql firewallrule delete [options] &lt;serverName> &lt;ruleName>**
 
 Delete a firewall rule
+
+##<a name ="Commands_to_manage_vnet"></a>Commands to manage your Virtual Networks
+
+Use these commands to manage your Virtual Networks
+
+**network vnet create [options] &lt;location>**
+
+Create a new Virtual Network
+
+	~$ azure network vnet create vnet1 --location "West US" -v
+	info:    Executing command network vnet create
+	info:    Using default address space start IP: 10.0.0.0
+	info:    Using default address space cidr: 8
+	info:    Using default subnet start IP: 10.0.0.0
+	info:    Using default subnet cidr: 11
+	verbose: Address Space [Starting IP/CIDR (Max VM Count)]: 10.0.0.0/8 (16777216)
+	verbose: Subnet [Starting IP/CIDR (Max VM Count)]: 10.0.0.0/11 (2097152)
+	verbose: Fetching Network Configuration
+	verbose: Fetching or creating affinity group
+	verbose: Fetching Affinity Groups
+	verbose: Fetching Locations
+	verbose: Creating new affinity group AG1
+	info:    Using affinity group AG1
+	verbose: Updating Network Configuration
+	info:    network vnet create command OK
+
+**network vnet show &lt;name>**
+
+Show details of a Virtual Network
+
+	~$ azure network vnet show vnet1
+	info:    Executing command network vnet show
+	+ Fetching Virtual Networks
+	data:    Name "vnet1"
+	data:    Id "25786fbe-08e8-4e7e-b1de-b98b7e586c7a"
+	data:    AffinityGroup "AG1"
+	data:    State "Created"
+	data:    AddressSpace AddressPrefixes 0 "10.0.0.0/8"
+	data:    Subnets 0 Name "subnet-1"
+	data:    Subnets 0 AddressPrefix "10.0.0.0/11"
+	info:    network vnet show command OK
+
+**vnet list**
+
+List all existing Virtual Networks
+
+	~$ azure network vnet list
+	info:    Executing command network vnet list
+	+ Fetching Virtual Networks
+	data:    Name        Status   AffinityGroup
+	data:    ----------  -------  -------------
+	data:    vnet1      Created  AG1
+	data:    vnet2      Created  AG1
+	data:    vnet3      Created  AG1
+	data:    vnet4      Created  AG1
+	info:    network vnet list command OK
+
+**network vnet show &lt;name>**
+
+Show details of the specified Virtual Network
+
+	~$ azure network vnet show opentechvn1
+	info:    Executing command network vnet show
+	+ Fetching Virtual Networks
+	data:    Name "opentechvn1"
+	data:    Id "cab41cb0-396a-413b-83a1-302f0f1c867d"
+	data:    AffinityGroup "AG-CLI-456f89eaa7fae2b3"
+	data:    State "Created"
+	data:    AddressSpace AddressPrefixes 0 "10.100.23.255/27"
+	data:    Subnets 0 Name "frontend"
+	data:    Subnets 0 AddressPrefix "10.100.23.224/29"
+	info:    network vnet show command OK
+
+**network vnet delete &lt;name>**
+
+Deletes the specified Virtual Network
+
+	~$ azure network vnet delete opentechvn1
+	info:    Executing command network vnet delete
+	+ Fetching Network Configuration
+	Delete the virtual network opentechvn1 ?  (y/n) y
+	+ Deleting the virtual network opentechvn1
+	info:    network vnet delete command OK
+
+**network dnsserver register [options] &lt;dnsIP>**
+
+Register a DNS server that you plan to use for name resolution in your network configuration
+
+	~$ azure network dnsserver register 98.138.253.109 --dns-id FrontEndDnsServer
+	info:    Executing command network dnsserver register
+	+ Fetching Network Configuration
+	+ Updating Network Configuration
+	info:    network dnsserver register command OK
+
+**network dnsserver list**
+
+List all the DNS servers registered in your network configuration
+
+	~$ azure network dnsserver list
+	info:    Executing command network dnsserver list
+	+ Fetching Network Configuration
+	data:    DNS Server ID         DNS Server IP
+	data:    --------------------  --------------
+	data:    DNS-bb39b4ac34d66a86  44.55.22.11
+	data:    FrontEndDnsServer     98.138.253.109
+	info:    network dnsserver list command OK
+
+**network dnsserver unregister [options] &lt;dnsIP>**
+
+Removes a DNS server entry from the network configuration
+
+	~$ azure network dnsserver unregister 77.88.99.11
+	info:    Executing command network dnsserver unregister
+	+ Fetching Network Configuration
+	Delete the DNS server entry dns-4 ( 77.88.99.11 ) %s ? (y/n) y
+	+ Deleting the DNS server entry dns-4 ( 77.88.99.11 )
+	info:    network dnsserver unregister command OK
+
