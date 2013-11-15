@@ -23,9 +23,9 @@ In addition to command-specific optional parameters documented here, there are t
 * [Commands to manage your Windows Azure certificates](#Commands_to_manage_your_Azure_certificates)
 * [Commands to manage your web sites](#Commands_to_manage_your_web_sites)
 * [Commands to manage Windows Azure Mobile Services](#Commands_to_manage_mobile_services)
+* [Manage tool local settings](#Manage_tool_local_settings)
 * [Commands to manage Service Bus](#Commands_to_manage_service_bus)
 * [Commands to manage SQL Databases](#Commands_to_manage_sql)
-* [Manage tool local settings](#Manage_tool_local_settings)
 * [Commands to manage your Virtual Networks](#Commands_to_manage_vnet)
 
 ##<a name="Manage_your_account_information_and_publish_settings"></a>Manage your account information and publish settings
