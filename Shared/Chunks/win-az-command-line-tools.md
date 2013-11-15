@@ -72,6 +72,16 @@ This command removes the stored publish settings that have been imported. Use th
 
 List the imported subscriptions
 
+	~$ azure account list
+	info:    Executing command account list
+	data:    Name                                    Id
+	       Current
+	data:    --------------------------------------  -------------------------------
+	-----  -------
+	data:    Forums Subscription                     8679c8be-3b05-49d9-b8fb  true
+	data:    Evangelism Team Subscription            9e672699-1055-41ae-9c36  false
+	data:    MSOpenTech-Prod                         c13e6a92-706e-4cf5-94b6  false
+
 **account set [options] <subscription>**
 
 Set the current subscription
@@ -95,13 +105,39 @@ Affinity groups can be set when a group of virtual machines spans multiple physi
 
 This command creates a new affinity group
 
+	~$ azure account affinity-group create opentec -l "West US"
+	info:    Executing command account affinity-group create
+	+ Creating affinity group
+	info:    account affinity-group create command OK
+
 **account affinity-group show [options] <name>**
 
 This command shows the details of the affinity group
 
+	~$ azure account affinity-group show opentec
+	info:    Executing command account affinity-group show
+	+ Getting affinity groups
+	data:    $ xmlns "http://schemas.microsoft.com/windowsazure"
+	data:    $ xmlns:i "http://www.w3.org/2001/XMLSchema-instance"
+	data:    Name "opentec"
+	data:    Label "b3BlbnRlYw=="
+	data:    Description $ i:nil "true"
+	data:    Location "West US"
+	data:    HostedServices ""
+	data:    StorageServices ""
+	data:    Capabilities Capability 0 "PersistentVMRole"
+	data:    Capabilities Capability 1 "HighMemory"
+	info:    account affinity-group show command OK
+
 **account affinity-group delete [options] <name>**
 
 This command deletes the specified affinity group
+
+	~$ azure account affinity-group delete opentec
+	info:    Executing command account affinity-group delete
+	Delete affinity group opentec? [y/n] y
+	+ Deleting affinity group
+	info:    account affinity-group delete command OK
 
 ###Commands to manage your account environment
 
@@ -1276,7 +1312,13 @@ Use these commands to manage your SQL Servers
 
 **sql server create &lt;administratorLogin> &lt;administratorPassword> &lt;location>**
 
-create a new database server
+Create a new database server
+
+	~$ azure sql server create test T3stte$t "West US"
+	info:    Executing command sql server create
+	+ Creating SQL Server
+	data:    Server Name i1qwc540ts
+	info:    sql server create command OK
 
 **sql server show &lt;name>**
 
@@ -1306,6 +1348,12 @@ Get the list of servers
 **sql server delete &lt;name>**
 
 Deletes a server 
+
+	~$ azure sql server delete i1qwc540ts
+	info:    Executing command sql server delete
+	Delete server i1qwc540ts? [y/n] y
+	+ Removing SQL Server
+	info:    sql server delete command OK
 
 ###Commands to manage SQL Databases
 
