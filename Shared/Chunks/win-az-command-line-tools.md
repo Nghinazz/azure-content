@@ -322,6 +322,16 @@ A virtual machine image cannot be captured while the virtual machine state unles
 	+ Capturing VM
 	info:   vm capture command OK
 
+**vm export [options] &lt;vm-name> &lt;file-path>**
+
+This command exports a Windows Azure virtual machine image to a file
+
+	~$ azure vm export "myvm" "C:\"
+	info:    Executing command vm export
+	+ Getting virtual machines
+	+ Exporting the VM
+	info:   vm export command OK
+
 ##<a name="Commands_to_manage_your_Azure_virtual_machine_endpoints"></a>Commands to manage your Windows Azure virtual machine endpoints
 The following diagram shows the architecture of a typical deployment of multiple instances of a virtual machine. Note that in this example port 3389 is open on each virtual machine (for RDP access), and there is also an internal IP address (for example, 168.55.11.1) on each virtual machine that is used by the load balancer to route traffic to the virtual machine. This internal IP address can also be used for communication between virtual machines.
 
@@ -340,6 +350,10 @@ This command creates a virtual machine endpoint.
 	+ Reading network configuration
 	+ Updating network configuration
 	info:   vm endpoint create command OK
+
+**vm endpoint create-multiple [options] &lt;vm-name> &lt;lb-port>[:&lt;vm-port>[:&lt;protocol>[:&lt;lb-set-name>[:&lt;prob-protocol>:&lt;lb-prob-port>[:&lt;prob-path>]]]]] ]{1-*}**
+
+Create multiple vm endpoints
 
 **vm endpoint delete &lt;vm-name> &lt;lb-port>**
 
@@ -361,6 +375,32 @@ This command lists all virtual machine endpoints. The -json option specifies tha
 	data:   Name  External Port  Local Port                                        
 	data:   ----  -------------  ----------
 	data:   ssh   22             22
+
+**vm endpoint show [options] &lt;vm-name>**
+
+This command shows the details of the endpoints on a vm
+
+	~$ azure vm endpoint show "mycouchvm"
+	info:    Executing command vm endpoint show
+	+ Getting virtual machines
+	data:    Network Endpoints 0 LoadBalancedEndpointSetName "CouchDB_EP-5984"
+	data:    Network Endpoints 0 LocalPort "5984"
+	data:    Network Endpoints 0 Name "CouchDB_EP"
+	data:    Network Endpoints 0 Port "5984"
+	data:    Network Endpoints 0 Protocol "tcp"
+	data:    Network Endpoints 0 Vip "168.61.9.97"
+	data:    Network Endpoints 1 LoadBalancedEndpointSetName "CouchEP_2-2020"
+	data:    Network Endpoints 1 LocalPort "2020"
+	data:    Network Endpoints 1 Name "CouchEP_2"
+	data:    Network Endpoints 1 Port "2020"
+	data:    Network Endpoints 1 Protocol "tcp"
+	data:    Network Endpoints 1 Vip "168.61.9.97"
+	data:    Network Endpoints 2 LocalPort "3389"
+	data:    Network Endpoints 2 Name "RemoteDesktop"
+	data:    Network Endpoints 2 Port "3389"
+	data:    Network Endpoints 2 Protocol "tcp"
+	data:    Network Endpoints 2 Vip "168.61.9.97"
+	info:    vm endpoint show command OK
 
 ##<a name="Commands_to_manage_your_Azure_virtual_machine_images"></a>Commands to manage your Windows Azure virtual machine images
 
@@ -1363,17 +1403,89 @@ Use these commands to manage your SQL Databases
 
 Creates a new database instance
 
+	~$ azure sql db create fr8aelne00 newdb test
+	info:    Executing command sql db create
+	Administrator password: ********
+	+ Creating SQL Server Database
+	info:    sql db create command OK
+
 **sql db show [options] &lt;serverName> &lt;databaseName> &lt;administratorPassword>**
 
 Display database details
 
+	C:\windows\system32>azure sql db show fr8aelne00 newdb test
+	info:    Executing command sql db show
+	Administrator password: ********
+	+ Getting SQL server databases
+	data:    Database _ ContentRootElement=m:properties, id=https://fr8aelne00.datab
+	ase.windows.net/v1/ManagementService.svc/Server2('fr8aelne00')/Databases(4), ter
+	m=Microsoft.SqlServer.Management.Server.Domain.Database, scheme=http://schemas.m
+	icrosoft.com/ado/2007/08/dataservices/scheme, link=[rel=edit, title=Database, hr
+	ef=Databases(4), rel=http://schemas.microsoft.com/ado/2007/08/dataservices/relat
+	ed/Server, type=application/atom+xml;type=entry, title=Server, href=Databases(4)
+	/Server, rel=http://schemas.microsoft.com/ado/2007/08/dataservices/related/Servi
+	ceObjective, type=application/atom+xml;type=entry, title=ServiceObjective, href=
+	Databases(4)/ServiceObjective, rel=http://schemas.microsoft.com/ado/2007/08/data
+	services/related/DatabaseMetrics, type=application/atom+xml;type=entry, title=Da
+	tabaseMetrics, href=Databases(4)/DatabaseMetrics, rel=http://schemas.microsoft.c
+	om/ado/2007/08/dataservices/related/DatabaseCopies, type=application/atom+xml;ty
+	pe=feed, title=DatabaseCopies, href=Databases(4)/DatabaseCopies], title=, update
+	d=2013-11-18T19:48:27Z, name=
+	data:    Database Id 4
+	data:    Database Name newdb
+	data:    Database ServiceObjectiveId 910b4fcb-8a29-4c3e-958f-f7ba794388b2
+	data:    Database AssignedServiceObjectiveId 910b4fcb-8a29-4c3e-958f-f7ba794388b2
+	data:    Database ServiceObjectiveAssignmentState 1
+	data:    Database ServiceObjectiveAssignmentStateDescription Complete
+	data:    Database ServiceObjectiveAssignmentErrorCode
+	data:    Database ServiceObjectiveAssignmentErrorDescription
+	data:    Database ServiceObjectiveAssignmentSuccessDate
+	data:    Database Edition Web
+	data:    Database MaxSizeGB 1
+	data:    Database MaxSizeBytes 1073741824
+	data:    Database CollationName SQL_Latin1_General_CP1_CI_AS
+	data:    Database CreationDate
+	data:    Database RecoveryPeriodStartDate
+	data:    Database IsSystemObject
+	data:    Database Status 1
+	data:    Database IsFederationRoot
+	data:    Database SizeMB -1
+	data:    Database IsRecursiveTriggersOn
+	data:    Database IsReadOnly
+	data:    Database IsFederationMember
+	data:    Database IsQueryStoreOn
+	data:    Database IsQueryStoreReadOnly
+	data:    Database QueryStoreMaxSizeMB
+	data:    Database QueryStoreFlushPeriodSeconds
+	data:    Database QueryStoreIntervalLengthMinutes
+	data:    Database QueryStoreClearAll
+	data:    Database QueryStoreStaleQueryThresholdDays
+	info:    sql db show command OK
+
 **sql db list [options] &lt;serverName> &lt;administratorPassword>**
 
-List the database
+List the databases
+
+	~$ azure sql db list fr8aelne00 test
+	info:    Executing command sql db list
+	Administrator password: ********
+	+ Getting SQL server databases
+	data:    Name    Edition  Collation                     MaxSizeInGB
+	data:    ------  -------  ----------------------------  -----------
+	data:    master  Web      SQL_Latin1_General_CP1_CI_AS  5
+	info:    sql db list command OK
 
 **sql db delete [options] &lt;serverName> &lt;databaseName> &lt;administratorPassword>**
 
 Deletes a database 
+
+	~$ azure sql db delete fr8aelne00 newdb test
+	info:    Executing command sql db delete
+	Administrator password: ********
+	Delete database newdb? [y/n] y
+	+ Getting SQL server databases
+	+ Removing database
+	info:    sql db delete command OK
 
 ###Commands to manage your SQL Server firewall rules
 
@@ -1383,17 +1495,50 @@ Use these commands to manage your SQL Server firewall rules
 
 Create a new firewall rule for a SQL Server
 
+	~$ azure sql firewallrule create fr8aelne00 allowed 131.107.0.0 131.107.255.255
+	info:    Executing command sql firewallrule create
+	+ Creating Firewall Rule
+	info:    sql firewallrule create command OK
+
 **sql firewallrule show [options] &lt;serverName> &lt;ruleName>**
 
 Show firewall rule details
+
+	~$ azure sql firewallrule show fr8aelne00 allowed
+	info:    Executing command sql firewallrule show
+	+ Getting firewall rule
+	data:    Firewall rule Name allowed
+	data:    Firewall rule Type Microsoft.SqlAzure.FirewallRule
+	data:    Firewall rule State Normal
+	data:    Firewall rule SelfLink https://management.core.windows.net/9e672699-105
+	5-41ae-9c36-e85152f2e352/services/sqlservers/servers/fr8aelne00/firewallrules/allowed
+	data:    Firewall rule ParentLink https://management.core.windows.net/9e672699-1
+	055-41ae-9c36-e85152f2e352/services/sqlservers/servers/fr8aelne00
+	data:    Firewall rule StartIPAddress 131.107.0.0
+	data:    Firewall rule EndIPAddress 131.107.255.255
+	info:    sql firewallrule show command OK
 
 **sql firewallrule list [options] &lt;serverName>**
 
 List the firewall rules
 
+	~$ azure sql firewallrule list fr8aelne00
+	info:    Executing command sql firewallrule list
+	\data:    Name     Start IP address  End IP address
+	data:    -------  ----------------  ---------------
+	data:    allowed  131.107.0.0       131.107.255.255
+	+
+	info:    sql firewallrule list command OK
+
 **sql firewallrule delete [options] &lt;serverName> &lt;ruleName>**
 
-Delete a firewall rule
+This command will delete a firewall rule
+
+	~$ azure sql firewallrule delete fr8aelne00 allowed
+	info:    Executing command sql firewallrule delete
+	Delete rule allowed? [y/n] y
+	+ Removing firewall rule
+	info:    sql firewallrule delete command OK
 
 ##<a name ="Commands_to_manage_vnet"></a>Commands to manage your Virtual Networks
 
