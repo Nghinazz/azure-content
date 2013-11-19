@@ -183,30 +183,33 @@ The following diagram shows how Windows Azure virtual machines are hosted in the
 
 **create-new** creates the drive in blob storage (that is, e:\ in the diagram); **attach** attaches an already created but unattached disk to a virtual machine.
 
-**vm create &lt;dns-prefix> &lt;image> &lt;userName> [password] [optional parameters]**
+**vm create [options] &lt;dns-name> &lt;image> &lt;userName> [password]**
 
 This command creates a new Windows Azure virtual machine. By default, each virtual machine is created in its own cloud service; however, you can specify that a virtual machine should be added to an existing cloud service through use of the -c option as documented here.
 
 Note that the vm create command, like the Windows Azure portal, only creates virtual machines in the production deployment environment. There is currently no option for creating a virtual machine in the staging deployment environment of a cloud service. Note that a Windows Azure storage account is created by this command if one does not already exist for your subscription.
 
-When you create a new virtual machine, you will need to specify the physical location (that is, data center) where the virtual machine will reside. You can specify a location through the --location parameter, or you can specify an affinity group through the --affinity-group parameter. If neither is provided, you are prompted to provide one from a list of valid locations.
+You can specify a location through the --location parameter, or you can specify an affinity group through the --affinity-group parameter. If neither is provided, you are prompted to provide one from a list of valid locations.
 
 The supplied password must be 8-123 characters long and meet the password complexity requirements of the operating system that you are using for this virtual machine.
 
-If you anticipate the need to use SSH to manage a deployed Linux virtual machine (as is usually the case), you must enable SSH via the -s option when you create the virtual machine. It is not possible enable SSH after the virtual machine has been created.
+If you anticipate the need to use SSH to manage a deployed Linux virtual machine (as is usually the case), you must enable SSH via the -e option when you create the virtual machine. It is not possible enable SSH after the virtual machine has been created.
 
 Windows virtual machines can enable RDP later by adding port 3389 as an endpoint.
 
 The following optional parameters are supported for this command:
 
-**-c** create the virtual machine inside an already created deployment in a hosting service. If -vmname is not used with this option, the name of the new virtual machine will be generated automatically.<br />
-**--vm-name** Specify the name of the virtual machine. This parameter takes hosting service name by default. If -vmname is not specified, the name for the new virtual machine is generated as &lt;service-name>&lt;id>, where &lt;id> is the number of existing virtual machines in the service plus 1 For example, if you use this command to add a new virtual machine to a hosting service MyService that has one existing virtual machine, the new virtual machine is named MyService2.<br /> 
-**-u --blob-url** Specify the blob storage URL from which to create the virtual machine system disk. <br />
-**--vm-size** Specify the size of the virtual machine. Valid values are "extrasmall", "small", "medium", "large", "extralarge". The default value is "small". <br />
+**-c, --connect** create the virtual machine inside an already created deployment in a hosting service. If -vmname is not used with this option, the name of the new virtual machine will be generated automatically.<br />
+**-n, --vm-name** Specify the name of the virtual machine. This parameter takes hosting service name by default. If -vmname is not specified, the name for the new virtual machine is generated as &lt;service-name>&lt;id>, where &lt;id> is the number of existing virtual machines in the service plus 1 For example, if you use this command to add a new virtual machine to a hosting service MyService that has one existing virtual machine, the new virtual machine is named MyService2.<br /> 
+**-u, --blob-url** Specify the blob storage URL from which to create the virtual machine system disk. <br />
+**-z, --vm-size** Specify the size of the virtual machine. Valid values are "extrasmall", "small", "medium", "large", "extralarge". The default value is "small". <br />
 **-r** Adds RDP connectivity to a Windows virtual machine. <br />
-**-s** Adds SSH connectivity to a Linux virtual machine. This option can be used only when the virtual machine is created. <br />
-**--location** specifies the location (for example, "North Central US"). <br />
-**--affinity-group** specifies the affinity group.<br />
+**-e, --ssh** Adds SSH connectivity to a Windows virtual machine. <br />
+**-t, --ssh-cert** Specifies the SSh certificate. <br />
+**-s** The subscription <br />
+**-w** The virtual network name <br/>
+**-l, --location** specifies the location (for example, "North Central US"). <br />
+**-a, --affinity-group** specifies the affinity group.<br />
 **-w, --virtual-network-name** Specify the virtual network on which to add the new vitual machine. Virtual networks can be set up and managed from the Windows Azure portal.<br />
 **-b, --subnet-names** Specifies the subnet names to assign the virtual machine.
 
@@ -217,11 +220,11 @@ In this example, MSFT__Win2K8R2SP1-120514-1520-141205-01-en-us-30GB is an image 
 	Enter VM 'my-vm-name' password: ************                                     
 	info:   vm create command OK
 
-**vm create-from &lt;dns-prefix> &lt;role-file>**
+**vm create-from &lt;dns-name> &lt;role-file>**
 
 This command creates a new Windows Azure virtual machine from a JSON role file.
 
-	~$ azure vm create-from example.json
+	~$ azure vm create-from my-vm example.json
 	info:   OK
 
 **vm list [options]**
@@ -543,6 +546,15 @@ Some systems impose per-process file descriptor limits. If this limit is exceede
 	info:   http://account.blob.core.azure.com/disks/test.vhd is uploaded successfully
 	info:   vm disk create command OK
 
+**vm disk upload [options] &lt;source-path> &lt;blob-url> &lt;storage-account-key>**
+
+This command allows you to upload a vm disk
+
+	~$ azure vm disk upload “http://sourcestorage.blob.core.windows.net/vhds/sample.vhd” “http://destinationstorage.blob.core.windows.net/vhds/sample.vhd” “DESTINATIONSTORAGEACCOUNTKEY”
+	info:   Executing command vm disk upload                                                      
+	info:   Uploading 12351.5 KB
+	info:   vm disk upload command OK
+
 **vm disk attach &lt;vm-name> &lt;disk-image-name>**
 
 This command attaches an existing disk in blob storage to an existing virtual machine deployed in a cloud service.
@@ -570,6 +582,41 @@ This command detaches a data disk attached to a Windows Azure virtual machine. &
 ##<a name="Commands_to_manage_your_Azure_cloud_services"></a>Commands to manage your Windows Azure cloud services
 
 Windows Azure cloud services are applications and services hosted on web roles and worker roles. The following commands can be used to manage Windows Azure cloud services.
+
+**service create [options] &lt;serviceName>**
+
+This command creates a new cloud service
+
+	~$ azure service create newservicemsopentech
+	info:    Executing command service create
+	+ Getting locations
+	help:    Location:
+	  1) East Asia
+	  2) Southeast Asia
+	  3) North Europe
+	  4) West Europe
+	  5) East US
+	  6) West US
+	  : 6
+	+ Creating cloud service
+	data:    Cloud service name newservicemsopentech
+	info:    service create command OK
+
+**service show [options] &lt;serviceName>**
+
+This command shows the details of a Windows Azure cloud service
+
+	~$ azure service show newservicemsopentech
+	info:    Executing command service show
+	+ Getting cloud service
+	data:    Name newservicemsopentech
+	data:    Url https://management.core.windows.net/9e672699-1055-41ae-9c36-e85152f2e352/services/hostedservices/newservicemsopentech
+	data:    Properties location West US
+	data:    Properties label newservicemsopentech
+	data:    Properties status Created
+	data:    Properties dateCreated
+	data:    Properties dateLastModified
+	info:    service show command OK
 
 **service list [options]**
 
@@ -646,6 +693,13 @@ This command lists your web sites.
 	data:   myphpsite       Running  myphpsite.antdf0.antares.windows.net     
 	data:   mydrupalsite36  Running  mydrupalsite36.antdf0.antares.windows.net
 	info:   site list command OK
+
+**site set [options] [name]**
+
+This command will set configuration options for your web site [name]
+
+**site deploymentscript [options]**
+This command will generate a custom deployment script
 
 **site create [options] [name]**
 
@@ -741,6 +795,146 @@ This command stops a web site.
 	info:   Stopping site mysite
 	info:   Site mysite has been stopped
 	info:   site stop command OK
+
+**site location list [options]**
+
+This command lists your Web Site locations
+
+	~$ azure site location list
+	info:    Executing command site location list
+	+ Getting locations
+	data:    Name
+	data:    ----------------
+	data:    West Europe
+	data:    West US
+	data:    North Central US
+	data:    North Europe
+	data:    East Asia
+	data:    East US
+	info:    site location list command OK
+
+###Commands to manage your Web Site application settings
+
+**site appsetting list [options] [name]**
+
+**site appsetting add [options] &lt;keyvaluepair> [name]**
+
+**site appsetting delete [options] &lt;key> [name]**
+
+**site appsetting show [options] &lt;key> [name]**
+
+###Commands to manage your Web Site certificates
+
+**site cert list [options] [name]**
+
+**site cert add [options] &lt;certificate-path> [name]**
+
+**site cert delete [options] &lt;thumbprint> [name]**
+
+**site cert show [options] &lt;thumbprint> [name]**
+
+###Commands to manage your Web Site connection strings
+
+**site connectionstring list [options] [name]**
+**site connectionstring add [options] &lt;connectionname> &lt;value> &lt;type> [name]**
+
+**site connectionstring delete [options] &lt;connectionname> [name]**
+
+**site connectionstring show [options] &lt;connectionname> [name]**
+
+###Commands to manage your Web Site default documents
+
+**site defaultdocument list [options] [name]**
+
+**site defaultdocument add [options] &lt;document> [name]**
+
+**site defaultdocument delete [options] &lt;document> [name]**
+
+###Commands to manage your Web Site deployments
+
+**site deployment list [options] [name]**
+
+**site deployment show [options] &lt;commitId> [name]**
+
+**site deployment redeploy [options] &lt;commitId> [name]**
+
+**site deployment github [options] [name]**
+
+**site deployment user set [options] [username] [pass]**
+
+###Commands to manage your Web Site domains
+
+**site domain list [options] [name]**
+
+**site domain add [options] &lt;dn> [name]**
+
+**site domain delete [options] &lt;dn> [name]**
+
+###Commands to manage your Web Site handler mappings
+
+**site handler list [options] [name]**
+
+**site handler add [options] &lt;extension> &lt;processor> [name]**
+
+**site handler delete [options] &lt;extension> [name]**
+
+###Commands to manage your Web Site diagnostics
+
+**site log download [options] [name]**
+
+Download a .zip file of your website diagnostics
+
+	~$ azure site log download
+	info:    Executing command site log download
+	Web site name: mydemosite
+	+ Getting sites
+	+ Getting site information
+	+ Downloading diagnostic log to diagnostics.zip
+	info:    site log download command OK
+
+**site log tail [options] [name]**
+
+This command connects your terminal to the log-streaming service
+
+	~$ azure site log tail
+	info:    Executing command site log tail
+	Web site name: mydemosite
+	+ Getting sites
+	+ Getting site information
+	2013-11-19T17:24:17  Welcome, you are now connected to log-streaming service.
+
+**site log set [options] [name]**
+
+This command configures the diagnistic options
+
+	~$ azure site log set -a
+	info:    Executing command site log set
+	+ Getting output options
+	help:    Output:
+	  1) file
+	  2) storage
+	  : 1
+	Web site name: mydemosite
+	+ Getting locations
+	+ Getting sites
+	+ Getting site information
+	+ Getting diagnostic settings
+	+ Updating diagnostic settings
+	info:    site log set command OK
+
+###Commands to manage your Web Site repositories
+
+**site repository branch [options] &lt;branch> [name]**
+
+**site repository delete [options] [name]**
+
+**site repository sync [options] [name]**
+
+###Commands to manage your Web Site scaling
+
+**site scale mode [options] &lt;mode> [name]**
+
+**site scale instances [options] &lt;instances> [name]**
 
 
 ##<a name="Commands_to_manage_mobile_services"></a>Commands to manage Windows Azure Mobile Services
