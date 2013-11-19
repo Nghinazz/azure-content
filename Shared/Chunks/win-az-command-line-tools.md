@@ -698,8 +698,22 @@ This command lists your web sites.
 
 This command will set configuration options for your web site [name]
 
+	~$ azure site set
+	info:    Executing command site set
+	Web site name: mydemosite
+	+ Getting sites
+	+ Updating site config information
+	info:    site set command OK
+
 **site deploymentscript [options]**
+
 This command will generate a custom deployment script
+
+	~$ azure site deploymentscript --node
+	info:    Executing command site deploymentscript
+	info:    Generating deployment script for node.js Web Site
+	info:    Generated deployment script files
+	info:    site deploymentscript command OK
 
 **site create [options] [name]**
 
@@ -817,15 +831,72 @@ This command lists your Web Site locations
 
 **site appsetting list [options] [name]**
 
+This command lists the app setting added to the website
+
+	~$ azure site appsetting list
+	info:    Executing command site appsetting list
+	Web site name: mydemosite
+	+ Getting sites
+	+ Getting site config information
+	data:    Name  Value
+	data:    ----  -----
+	data:    test  value
+	info:    site appsetting list command OK
+
 **site appsetting add [options] &lt;keyvaluepair> [name]**
+
+This command adds an app setting to your website as a key value pair
+
+	~$ azure site appsetting add test=value
+	info:    Executing command site appsetting add
+	Web site name: mydemosite
+	+ Getting sites
+	+ Getting site config information
+	+ Updating site config information
+	info:    site appsetting add command OK
 
 **site appsetting delete [options] &lt;key> [name]**
 
+This command delete the specified app setting from the website
+
+	~$ azure site appsetting delete test
+	info:    Executing command site appsetting delete
+	Web site name: mydemosite
+	+ Getting sites
+	+ Getting site config information
+	Delete application setting test? [y/n] y
+	+ Updating site config information
+	info:    site appsetting delete command OK
+
 **site appsetting show [options] &lt;key> [name]**
+
+This command displays details of the specified app setting
+
+	~$ azure site appsetting show test
+	info:    Executing command site appsetting show
+	Web site name: mydemosite
+	+ Getting sites
+	+ Getting site config information
+	data:    Value:  value
+	info:    site appsetting show command OK
 
 ###Commands to manage your Web Site certificates
 
 **site cert list [options] [name]**
+
+This command displays a list of the website certs
+
+	~$ azure site cert list
+	info:    Executing command site cert list
+	Web site name: mydemosite
+	+ Getting sites
+	+ Getting site information
+	data:    Subject                       Expiration Date	                  Thumbprint
+	data:    ----------------------------  -----------------------------------------
+	----------------  ----------------------------------------
+	data:    *.msopentech.com              Fri Nov 28 2014 09:49:57 GMT-0800 (Pacific Standard Time)  A40E82D3DC0286D1F58650E570ECF8224F69A148
+	data:    msopentech.azurewebsites.net  Fri Jun 19 2015 11:57:32 GMT-0700 (Pacific Daylight Time)  CE1CD6538852BF7A5DC32001C2E26A29B541F0E8
+	info:    site cert list command OK
 
 **site cert add [options] &lt;certificate-path> [name]**
 
@@ -833,9 +904,26 @@ This command lists your Web Site locations
 
 **site cert show [options] &lt;thumbprint> [name]**
 
+This command shows the cert details
+
+	~$ azure site cert show CE1CD65852B38DC32001C2E0E8F7A526A29B541F
+	info:    Executing command site cert show
+	Web site name: mydemosite
+	+ Getting sites
+	+ Getting site information
+	data:    Certificate hostNames 0=msopentech.azurewebsites.net
+	data:    Certificate expirationDate
+	data:    Certificate friendlyName msopentech.azurewebsites.net
+	data:    Certificate issueDate
+	data:    Certificate issuer CN=MSIT Machine Auth CA 2, DC=redmond, DC=corp, DC=microsoft, DC=com
+	data:    Certificate subjectName msopentech.azurewebsites.net
+	data:    Certificate thumbprint CE1CD65852B38DC32001C2E0E8F7A526A29B541F
+	info:    site cert show command OK
+
 ###Commands to manage your Web Site connection strings
 
 **site connectionstring list [options] [name]**
+
 **site connectionstring add [options] &lt;connectionname> &lt;value> &lt;type> [name]**
 
 **site connectionstring delete [options] &lt;connectionname> [name]**
